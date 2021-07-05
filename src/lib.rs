@@ -1,6 +1,5 @@
 use pyo3::exceptions::{PyKeyError, PyTypeError};
 use pyo3::prelude::*;
-use pyo3::wrap_pyfunction;
 use pyo3::PyObjectProtocol;
 use pyo3::{PyErr, PyResult};
 use std::fmt;
@@ -37,14 +36,8 @@ impl std::convert::From<AxialErrorWrap> for PyErr {
     }
 }
 
-#[pyfunction]
-fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
-    Ok((a + b).to_string())
-}
-
 #[pymodule]
 fn rustycoils_py(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     m.add_class::<AxialSystemWrapper>()?;
     Ok(())
 }
@@ -192,6 +185,18 @@ impl AxialSystemWrapper {
             Err(e) => Err(AxialErrorWrap::from(e)),
         };
         Ok(res?)
+    }
+
+    pub fn get_b_parallel(
+        &self,
+        positions: Vec<(f64, f64, f64)>,
+        tol: f64,
+    ) -> PyResult<Vec<(f64, f64, f64)>> {
+        Ok(rustycoils::get_b_parallel(
+            &self.axialsystem,
+            positions,
+            tol,
+        ))
     }
 }
 
