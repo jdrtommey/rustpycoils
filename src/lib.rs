@@ -37,7 +37,7 @@ impl std::convert::From<AxialErrorWrap> for PyErr {
 }
 
 #[pymodule]
-fn rustycoils_py(_py: Python, m: &PyModule) -> PyResult<()> {
+fn rustpycoils(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<AxialSystemWrapper>()?;
     Ok(())
 }
@@ -166,12 +166,12 @@ impl AxialSystemWrapper {
         };
         Ok(res?)
     }
-    pub fn get_field(&self, coordinates: (f64, f64, f64), tol: f64) -> PyResult<Vec<f64>> {
-        let (x, y, z) = self.axialsystem.get_field(&coordinates, &tol);
+    pub fn get_field(&self, coordinates: [f64; 3], tol: f64) -> PyResult<Vec<f64>> {
+        let [x, y, z] = self.axialsystem.get_field(coordinates, &tol);
         Ok(vec![x, y, z])
     }
     pub fn get_field_axial(&mut self, z: f64, r: f64, tol: f64) -> PyResult<Vec<f64>> {
-        let (z, r) = self.axialsystem.get_field_axial(&z, &r, &tol);
+        let [z, r] = self.axialsystem.get_field_axial(&z, &r, &tol);
         Ok(vec![z, r])
     }
 
@@ -186,12 +186,15 @@ impl AxialSystemWrapper {
         };
         Ok(res?)
     }
-
-    pub fn get_b_parallel(
-        &self,
-        positions: Vec<(f64, f64, f64)>,
-        tol: f64,
-    ) -> PyResult<Vec<(f64, f64, f64)>> {
+    /// Computes the magnetic field vector for the given position.
+    ///
+    /// This function makes use of a Rayon parallel iterator in the rustycoils crate.
+    ///
+    /// # Arguments
+    ///  `positions` a list containing 3D coordinates for evaluation
+    ///  `tol` - the tolerance at which to stop including expansion terms
+    ///  ```
+    pub fn get_b(&self, positions: Vec<[f64; 3]>, tol: f64) -> PyResult<Vec<[f64; 3]>> {
         Ok(rustycoils::get_b_parallel(
             &self.axialsystem,
             positions,
