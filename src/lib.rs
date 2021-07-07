@@ -186,16 +186,20 @@ impl AxialSystemWrapper {
         };
         Ok(res?)
     }
-
-    pub fn get_b_parallel(&self, positions: Vec<[f64; 3]>, tol: f64) -> PyResult<Vec<[f64; 3]>> {
+    /// Computes the magnetic field vector for the given position.
+    ///
+    /// This function makes use of a Rayon parallel iterator in the rustycoils crate.
+    ///
+    /// # Arguments
+    ///  `positions` a list containing 3D coordinates for evaluation
+    ///  `tol` - the tolerance at which to stop including expansion terms
+    ///  ```
+    pub fn get_b(&self, positions: Vec<[f64; 3]>, tol: f64) -> PyResult<Vec<[f64; 3]>> {
         Ok(rustycoils::get_b_parallel(
             &self.axialsystem,
             positions,
             tol,
         ))
-    }
-    pub fn get_b_seq(&self, positions: Vec<[f64; 3]>, tol: f64) -> PyResult<Vec<[f64; 3]>> {
-        Ok(rustycoils::get_b_seq(&self.axialsystem, positions, tol))
     }
 }
 
