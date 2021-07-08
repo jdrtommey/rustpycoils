@@ -1,3 +1,4 @@
+use numpy::PyArray2;
 use pyo3::exceptions::{PyKeyError, PyTypeError};
 use pyo3::prelude::*;
 use pyo3::PyObjectProtocol;
@@ -176,9 +177,6 @@ impl AxialSystemWrapper {
     }
 
     pub fn view(&self, id: &str) -> PyResult<String> {
-        //  let foo = self.axialsystem.view(id);
-
-        //    Ok("dj".to_string())
         let i = self.axialsystem.view(id);
         let res = match i {
             Ok(string) => Ok(string),
@@ -188,18 +186,19 @@ impl AxialSystemWrapper {
     }
     /// Computes the magnetic field vector for the given position.
     ///
-    /// This function makes use of a Rayon parallel iterator in the rustycoils crate.
+    /// This function makes use of a Rayon accelerated parallel iterator in the ndarray crate.
     ///
     /// # Arguments
     ///  `positions` a list containing 3D coordinates for evaluation
     ///  `tol` - the tolerance at which to stop including expansion terms
     ///  ```
-    pub fn get_b(&self, positions: Vec<[f64; 3]>, tol: f64) -> PyResult<Vec<[f64; 3]>> {
-        Ok(rustycoils::get_b_parallel(
-            &self.axialsystem,
-            positions,
-            tol,
-        ))
+    pub fn get_b(&self, positions: &PyArray2<f64>, tol: f64) -> PyResult<Py<PyArray2<f64>>> {
+        let fields =
+            rustycoils::get_b_ndarray(&self.axialsystem, unsafe { positions.as_array() }, tol);
+        let convert = fields;
+        let gil = pyo3::Python::acquire_gil();
+        let foo = PyArray2::from_array(gil.python(), &convert);
+        Ok(foo.to_owned())
     }
 }
 

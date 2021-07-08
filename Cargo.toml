@@ -11,7 +11,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 rustycoils ={git ="https://github.com/jdrtommey/rustycoils",branch="dev"}
-
+numpy = "0.13.2"
 [dependencies.pyo3]
 version = "0.13.2"
 features = ["extension-module"]
