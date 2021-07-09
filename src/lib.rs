@@ -1,5 +1,5 @@
 use numpy::PyArray2;
-use pyo3::exceptions::{PyKeyError, PyTypeError};
+use pyo3::exceptions::{PyIndexError, PyKeyError, PyTypeError};
 use pyo3::prelude::*;
 use pyo3::PyObjectProtocol;
 use pyo3::{PyErr, PyResult};
@@ -194,10 +194,18 @@ impl AxialSystemWrapper {
     ///  ```
     pub fn get_b(&self, positions: &PyArray2<f64>, tol: f64) -> PyResult<Py<PyArray2<f64>>> {
         let fields =
-            rustycoils::get_b_ndarray(&self.axialsystem, unsafe { positions.as_array() }, tol);
-        let convert = fields;
+            rustycoils::get_b_ndarray(&self.axialsystem, unsafe { &positions.as_array() }, tol);
+        let fields = match fields {
+            Ok(fields) => fields,
+            Err(_) => {
+                return Err(PyIndexError::new_err(
+                    "failed to convert input array into correct shape".to_string(),
+                ))
+            }
+        };
+        //let convert = fields;
         let gil = pyo3::Python::acquire_gil();
-        let foo = PyArray2::from_array(gil.python(), &convert);
+        let foo = PyArray2::from_array(gil.python(), &fields);
         Ok(foo.to_owned())
     }
 }
@@ -208,6 +216,3 @@ impl PyObjectProtocol for AxialSystemWrapper {
         Ok(format!("{}", self.axialsystem))
     }
 }
-
-#[cfg(test)]
-mod tests {}
