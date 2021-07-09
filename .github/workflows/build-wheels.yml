@@ -33,7 +33,7 @@ jobs:
 
   build_sdist:
         name: Build Source distribution
-        runs-ono: ubuntu-latest
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
 
