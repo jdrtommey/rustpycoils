@@ -12,3 +12,7 @@ An analytic solution to the ideal wire loop is readily available and can be comp
 This module impliments the primitive objects discussed in [Off-axis expansion solution of Laplace's equation: Application to accurate and rapid calculation of coil magnetic fields](https://ieeexplore.ieee.org/document/760416) which crucially have analytic derivatives to arbitrary powers allowing for fast and accurate higher order derivatives of the total magnetic field to be computed. Using these primitives to build up the total system allows for magnetic systems of coils to be accuratly and rapidly be computed close to the axis. 
 
 This is not a general competitor for modules such as [magpylib](https://magpylib.readthedocs.io/en/latest/) which offer analytic expressions for magnetic fields based on primitives, and provided there is no material response, give exact solutions. It is instead useful when a magnetic field with cylindrical symmetry is being calculated for use in an atomic beam simulation (my use case). In particular when only the region close to the center of the coil is needed. 
+
+### Installation
+
+
