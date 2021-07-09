@@ -19,7 +19,7 @@ matrix:
 env:
   global:
     - TWINE_USERNAME=jdrtommey
-      # Note: TWINE_PASSWORD is set in Travis settings
+    - TWINE_PASSWORD=testfoopassword
 
 script:
   - $PIP install cibuildwheel setuptools_rust
