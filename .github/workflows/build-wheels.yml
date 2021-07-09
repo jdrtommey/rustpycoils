@@ -43,7 +43,7 @@ jobs:
                 python-version: '3.8'
 
             - name: Build SDist 
-              run: source {project}/.github/workflows/build-sdist.sh
+              run: chmod +x "${GITHUB_WORKSPACE}/.github/workflows/build-sdist.sh"
 
             - uses: actions/upload-artifact@v2
               with:
