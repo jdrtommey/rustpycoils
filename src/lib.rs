@@ -205,8 +205,8 @@ impl AxialSystemWrapper {
         };
         //let convert = fields;
         let gil = pyo3::Python::acquire_gil();
-        let foo = PyArray2::from_array(gil.python(), &fields);
-        Ok(foo.to_owned())
+        let b_result_array = PyArray2::from_array(gil.python(), &fields);
+        Ok(b_result_array.to_owned())
     }
 }
 
