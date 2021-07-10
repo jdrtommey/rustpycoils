@@ -1,5 +1,4 @@
 # rustpycoils
-[![Actions Status](https://github.com/jdrtommey/rustpycoils/workflows/Test/badge.svg)](https://github.com/jdrtommey/rustpycoils/actions)
 [![Actions Status](https://github.com/jdrtommey/rustpycoils/workflows/LintFormat/badge.svg)](https://github.com/jdrtommey/rustpycoils/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -18,7 +17,7 @@ This is not a general competitor for modules such as [magpylib](https://magpylib
 
 ![Alt text](./benchmark/speed_comparison.png)
 
-As can be seen inset in the left-hand figure this library can compute the magnetic field of a single position in space in around 200 times faster. As the number of positions which need to be computed concurrently increases this increases particulary after around 4000 positions. The speed increase is more dramatic when a number of wire loops are included in the calculation, such as to model a solenoid or a pair of helmholtz coils. This is shown on the right where the magnetic field is computed at a single location at the center of the coils as the number of coils increases. 
+As can be seen inset in the left-hand figure this library can compute the magnetic field of a single position around 200 times faster. As the number of positions which need to be computed concurrently increases this increases particulary after around 4000 positions. The speed increase is more dramatic when a number of wire loops are included in the calculation, such as to model a solenoid or a pair of helmholtz coils. This is shown on the right where the magnetic field is computed at a single location at the center of the coils as the number of coils increases. 
 
 ###### Accuracy Comparison
 
