@@ -172,7 +172,7 @@ impl AxialSystemWrapper {
         Ok(vec![x, y, z])
     }
     pub fn get_field_axial(&mut self, z: f64, r: f64, tol: f64) -> PyResult<Vec<f64>> {
-        let [z, r] = self.axialsystem.get_field_axial(&z, &r, &tol);
+        let [z, r] = self.axialsystem.get_field_axial(&[z, r], &tol);
         Ok(vec![z, r])
     }
 
