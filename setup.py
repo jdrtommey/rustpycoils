@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools_rust import Binding, RustExtension
 
-setup(name='test1_rustpycoils',
+setup(name='rustpycoils',
       author="J.D.R. Tommey",
       author_email="jake@tommey.co.uk",
       url='http://github.com/jdrtommey/rustpycoils/',
